@@ -11,18 +11,21 @@ const restartButton = document.getElementById("restart");
 let playerXScore = 0;
 let playerYScore = 0;
 
+// first you need to declare an array of winning patterns
+
 let winPatterns = [
-	[0,1,2], // ligne horizontale 1
-	[3,4,5], // ligne horizontale 2
-	[6,7,8], // ligne horizontale 3
-	[0,3,6], // colonne 1
-	[1,4,7], // colonne 2
-	[2,5,8], // colonne 3
-	[0,4,8], // diagonale 1
-	[2,4,6] // diagonale 2
+	[0,1,2], // line 1
+	[3,4,5], // line 2
+	[6,7,8], // line 3
+	[0,3,6], // column 1
+	[1,4,7], // column 2
+	[2,5,8], // column 3
+	[0,4,8], // diagonal 1
+	[2,4,6] // diagonal 2
 
 ];
-// on nomme mainGameLoop la boucle principale du jeu
+
+// this function is the main game loop
 mainGameLoop();
 
 function mainGameLoop(){
@@ -31,7 +34,7 @@ function mainGameLoop(){
 
 		const span = this.querySelector(".value");
 
-		// l'avantage de cette méthode c'est qu'on sait déjà si la case est vide ou pas	
+		// the advantage of using the * is that we already know if the square has been clicked or not
 		if(span.textContent ==="*")				
 			{
 				if(isXTurn)
@@ -44,7 +47,7 @@ function mainGameLoop(){
 					span.textContent = "O";
 					currentPlayerDisply.textContent = "X";
 				}
-				// ----- ici on va check si on a un gagnant
+				// ----- we check if we have a winner and increment the score
 				if (checkForWin())
 				{
 					if(isXTurn)
@@ -59,13 +62,6 @@ function mainGameLoop(){
 						playerYScoreDisplay.textContent = playerYScore;
 					}
 				}
-
-				// ---- ici on va check si on a un match nul
-				else if (checkForDraw())
-				{
-						alert("It's a draw");
-				}
-
 				isXTurn = !isXTurn;
 
 			}
@@ -81,24 +77,30 @@ function resetBoard(){
 	isXTurn = true;
 	currentPlayerDisply.textContent = "X";
 
-	// réinitialisation des patterns de victoire
+	// we reset the winning patterns
 
 	winPatterns = [
-		[0,1,2], // ligne horizontale 1
-		[3,4,5], // ligne horizontale 2
-		[6,7,8], // ligne horizontale 3
-		[0,3,6], // colonne 1
-		[1,4,7], // colonne 2
-		[2,5,8], // colonne 3
-		[0,4,8], // diagonale 1
-		[2,4,6] // diagonale 2
+		[0,1,2], // horizontal line 1
+		[3,4,5], // horizontal line 2
+		[6,7,8], // horizontal line 3
+		[0,3,6], // column 1
+		[1,4,7], // column 2
+		[2,5,8], // column 3
+		[0,4,8], // diagonal 1
+		[2,4,6] // diagonal 2
 
 	];
 
 }
 	
-// rappel que le javascript est à typage dynamique dont on peut changer le type de ce que retourne une fonction à tout moment
+// as javascript is dynamic type language, we can assign a return to a func without the need to specify
+// the returned type
+// so we dynamically turn our funct into a func that returns a boolean
+
 function checkForWin(){
+
+	// we loop through the winning patterns and check if the current player has won
+	// regarding if squareA and squareB and squareC are equal and not empty
 	const  winningPatternIndex = winPatterns.findIndex(pattern => {
 		const [a, b, c] = pattern;
 		const squareA = squares[a].querySelector(".value").textContent;
@@ -117,9 +119,6 @@ function checkForWin(){
 	return false;
 }
 
-function checkForDraw() {
-	return Array.from(squares).every(square => { square.querySelector(".value").textContent !== "*"; });
-}
 
 restartButton.addEventListener("click", resetBoard);
 
